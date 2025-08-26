@@ -1,0 +1,16 @@
+name: Mirror Repo
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        required: true
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          git config user.name 'Mirror'
+          git config user.email 'a@b.com'
+          git remote add mirror https://${{ github.actor }}:${{ secrets.TOKEN }}@github.com/${{ inputs.target }}.git
+          git push -u origin master
